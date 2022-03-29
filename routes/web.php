@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+
 // Su dung Request $request trong callback cua route
 
 /*
@@ -93,4 +95,23 @@ Route::get('/users/{userId}/{username?}', function (
 Route::prefix('/categories')->name('categories.')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('index');
     Route::get('/add', [CategoryController::class, 'add'])->name('add');
+    Route::delete('delete/{cate}',[CategoryController::class, 'delete'])->name('delete');
+    Route::post('/store', [CategoryController::class, 'store'])->name('store');
+    Route::get('/create',[CategoryController::class, 'create'])->name('create');
+    Route::put('/update/{id}',[CategoryController::class, 'update'])->name('update');
+    Route::get('/edit/{id}',[CategoryController::class, 'edit'])->name('edit');
+    
 });
+
+Route::prefix('/products')->name('products.')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('index');
+    Route::get('/add', [ProductController::class, 'add'])->name('add');
+    Route::delete('delete/{pro}',[ProductController::class, 'delete'])->name('delete');
+    Route::post('/store', [ProductController::class, 'store'])->name('store');
+    Route::get('/create',[ProductController::class, 'create'])->name('create');
+    Route::put('/update/{id}',[ProductController::class, 'update'])->name('update');
+    Route::get('/edit/{id}',[ProductController::class, 'edit'])->name('edit');
+
+    
+});
+

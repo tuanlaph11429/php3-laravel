@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Product;
 
 use Illuminate\Http\Request;
 
@@ -14,6 +15,19 @@ class ProductController extends Controller
     // Tra ve danh sach cac ban ghi product
     public function index()
     {
+        //Ellquent
+        //all rất cả bản ghi
+        $products = Product::all();
+        //get : lấy ra toàn bộ các bản ghi, kết hợp  được với câu điều kiện
+        //get : sẽ nằm cuối
+        $productsGet = Product::select('*')
+        
+        // ->where('id', '>', 3 )
+        // ->get();
+        ->orderBy('id','desc')
+        ->paginate(10);
+        return view('product.index', ['products' =>  $productsGet]);
+        // dd('danh sách category', $categories, $categoriesGet);
         //
     }
 
@@ -64,5 +78,26 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function delete(Product $pro) {
+        // Neu muon su dung model binding
+        // 1. Dinh nghia kieu tham so truyen vao la model tuong ung
+        // 2. Tham so o route === ten tham so truyen vao ham
+        if ($pro->delete()) {
+            return redirect()->route('products.index');
+        }
+
+        // Cach 1: destroy, tra ve id cua thang duoc xoa
+        // Chi ap dung khi nhan vao tham so la gia tri
+        // Neu k xoa duoc thi tra ve 0
+        $productDelete = Product::destroy($pro);
+        if ($productDelete !== 0) {
+            return redirect()->route('products.index');
+        }
+        // dd($categoryDelete);
+
+        // Cach 2: delete, tra ve true hoac false
+        // $category = Category::find($id);
+        // $category->delete();
     }
 }

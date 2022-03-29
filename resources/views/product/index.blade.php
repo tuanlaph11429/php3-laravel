@@ -5,7 +5,7 @@
 @section('content-title', 'Category page')
 @section('content')
 <div>
-    <a href="{{route('categories.create')}}">
+    <a href="{{route('products.create')}}">
         <button class="btn btn-primary">Create</button>
     </a>
 </div>
@@ -15,31 +15,24 @@
     <thead>
         <th>ID</th>
         <th>Name</th>
-        <th>Description</th>
-        <th>Slug</th>
-        <th>Status</th>
-        <th>Created at</th>
-        <th>Updated at</th>
-        <th>Actions</th>
+        <th>Price</th>
+        
         
     </thead>
     <tbody>
-     @foreach ($categories as $category) 
+     @foreach ($products as $product) 
               
         <tr>
-            <th>{{$category->id}}</th>
-            <th>{{$category->name}}</th>
-            <th>{{$category->description ?: 'N/A'}}</th>
-            <th>{{$category->slug ?: 'N/A'}}</th>
-            <th>{{$category->status == 1 ?  'Active' : 'Deactive'}} </th>
-            <th>{{$category->created_at ?: 'N/A'}}</th>
-            <th>{{$category->updated_at ?: 'N/A'}}</th>  
+            <th>{{$product->id}}</th>
+            <th>{{$product->name}}</th>
+            <th>{{$product->price ?: 'N/A'}}</th>
+             
             <th>
-                <a href="{{route('categories.edit', $category->id)}}" class="btn btn-warning">
+                <a href="{{route('products.edit', $product->id)}}" class="btn btn-warning">
                     Edit
                 </a>
                     <form
-                    action="{{route('categories.delete', $category->id)}}"
+                    action="{{route('products.delete', $product->id)}}"
                     method="POST">
                     @method('DELETE')
                     {{-- <input type="text" name="_method" value="DELETE"> --}}
@@ -54,6 +47,6 @@
      @endforeach          
     </tbody>
 </table>
- {{ $categories->links() }}
+ {{ $products->links() }}
 
 @endsection
