@@ -16,6 +16,8 @@
         <th>ID</th>
         <th>Name</th>
         <th>Price</th>
+        <th>Category</th>
+        <th>Acction</th>
         
         
     </thead>
@@ -25,6 +27,7 @@
         <tr>
             <th>{{$product->id}}</th>
             <th>{{$product->name}}</th>
+           
             <th>{{$product->price ?: 'N/A'}}</th>
              
             <th>

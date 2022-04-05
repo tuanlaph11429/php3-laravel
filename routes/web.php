@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
 
 // Su dung Request $request trong callback cua route
@@ -111,6 +112,17 @@ Route::prefix('/products')->name('products.')->group(function () {
     Route::get('/create',[ProductController::class, 'create'])->name('create');
     Route::put('/update/{id}',[ProductController::class, 'update'])->name('update');
     Route::get('/edit/{id}',[ProductController::class, 'edit'])->name('edit');
+
+    
+});
+Route::prefix('/news')->name('news.')->group(function () {
+    Route::get('/', [NewsController::class, 'index'])->name('index');
+    Route::get('/add', [NewsController::class, 'add'])->name('add');
+    Route::delete('delete/{pro}',[NewsController::class, 'delete'])->name('delete');
+    Route::post('/store', [NewsController::class, 'store'])->name('store');
+    Route::get('/create',[NewsController::class, 'create'])->name('create');
+    Route::put('/update/{id}',[NewsController::class, 'update'])->name('update');
+    Route::get('/edit/{id}',[NewsController::class, 'edit'])->name('edit');
 
     
 });

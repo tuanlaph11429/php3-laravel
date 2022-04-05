@@ -1,33 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Category;
-use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\News;
 
 
-
-class CategoryController extends Controller
+class NewsController extends Controller
 {
     public function index(){
         //Ellquent
         //all rất cả bản ghi
-        $categories = Category::all();
+        $news = News::all();
         //get : lấy ra toàn bộ các bản ghi, kết hợp  được với câu điều kiện
         //get : sẽ nằm cuối
-        $categoriesGet = Category::select('*')
+        $newsGet = News::select('*')
         // ->where('id', '>', 3 )
         // ->get();
-        ->withCount('products')
-        ->orderBy('id','desc')
+        ->with('category')
+        // ->orderBy('id','desc')
         ->paginate(10);
-        return view('category.index', ['categories' =>  $categoriesGet]);
+        // dd($newsGet);
+        return view('new.index', ['news' =>  $newsGet]);
         // dd('danh sách category', $categories, $categoriesGet);
         
     }
     public function create()
     {
-        return view('category.create');
+        return view('news.create');
     }
     public function store(Request $request)
    
@@ -40,35 +41,35 @@ class CategoryController extends Controller
         // neu co loi trong dieu kien truyen vao thi tu dong ket thuc
         // ham quay tro lai form kem bien $errors
 
-        $categoryRequest = $request->all();
-        $category = new Category();
-        $category->name = $categoryRequest['name'];
-        $category->description = $categoryRequest['description'];
-        $category->status = $categoryRequest['status'];
-        $category->slug = Str::slug($categoryRequest['name']) . '-' . uniqid();
+        $newsRequest = $request->all();
+        $news = new News();
+        $news->name = $newsRequest['name'];
+        $news->description = $newsRequest['description'];
+        $news->status = $newsRequest['status'];
+        $news->slug = Str::slug($newsRequest['name']) . '-' . uniqid();
         // use Illuminate\Support\Str;
 
-        $category->save();
+        $news->save();
 
         return redirect()->route('categories.index');
     }
-    public function edit(Category $id){
-        return view('category.create', ['category' => $id]);
+    public function edit(News $id){
+        return view('news.create', ['news' => $id]);
     }
-    public function delete(Category $cate) {
+    public function delete(News $cate) {
         // Neu muon su dung model binding
         // 1. Dinh nghia kieu tham so truyen vao la model tuong ung
         // 2. Tham so o route === ten tham so truyen vao ham
         if ($cate->delete()) {
-            return redirect()->route('categories.index');
+            return redirect()->route('news.index');
         }
 
         // Cach 1: destroy, tra ve id cua thang duoc xoa
         // Chi ap dung khi nhan vao tham so la gia tri
         // Neu k xoa duoc thi tra ve 0
-        $categoryDelete = Category::destroy($cate);
-        if ($categoryDelete !== 0) {
-            return redirect()->route('categories.index');
+        $newsDelete = News::destroy($cate);
+        if ($newsDelete !== 0) {
+            return redirect()->route('news.index');
         }
         // dd($categoryDelete);
 
@@ -76,7 +77,7 @@ class CategoryController extends Controller
         // $category = Category::find($id);
         // $category->delete();
     }
-    public function update(Request $request, Category $id)
+    public function update(Request $request, News $id)
     {
         $cateUpdate=$id;
         $cateUpdate->name=$request->name;
@@ -91,6 +92,8 @@ class CategoryController extends Controller
         // $category->slug = Str::slug($request->name);
         // $category->save();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('news.index');
     }
+
+    
 }

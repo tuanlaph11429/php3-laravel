@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -38,11 +39,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     // Tao ban ghi product moi
-    public function store(Request $request)
-    {
-        //
-    }
-
+   
     /**
      * Display the specified resource.
      *
@@ -99,5 +96,35 @@ class ProductController extends Controller
         // Cach 2: delete, tra ve true hoac false
         // $category = Category::find($id);
         // $category->delete();
+    }
+    public function create()
+    {
+        return view('product.create');
+    }
+    public function edit(Product $id){
+        return view('product.create', ['product' => $id]);
+    }
+    public function store(Request $request)
+   
+    {
+        $request->validate([
+            // nam nao se validate dieu kien gi
+            'name'=>'required',
+            
+        ]);
+        // neu co loi trong dieu kien truyen vao thi tu dong ket thuc
+        // ham quay tro lai form kem bien $errors
+
+        $productRequest = $request->all();
+        $product = new Product();
+        $product->name = $productRequest['name'];
+        $product->description = $productRequest['description'];
+        $product->status = $productRequest['status'];
+        $product->slug = Str::slug($productRequest['name']) . '-' . uniqid();
+        // use Illuminate\Support\Str;
+
+        $product->save();
+
+        return redirect()->route('categories.index');
     }
 }
